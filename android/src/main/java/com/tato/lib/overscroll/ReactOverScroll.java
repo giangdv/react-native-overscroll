@@ -1,14 +1,11 @@
 package com.tato.lib.overscroll;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.ScrollView;
-
-import com.facebook.react.uimanager.SizeMonitoringFrameLayout;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -50,8 +47,6 @@ public class ReactOverScroll extends SizeMonitoringFrameLayout {
                 OverScrollDecoratorHelper.setUpOverScroll((HorizontalScrollView)child);
             } else if (child instanceof ListView) {
                 OverScrollDecoratorHelper.setUpOverScroll((ListView)child);
-            } else if (child instanceof ViewPager) {
-                OverScrollDecoratorHelper.setUpOverScroll((ViewPager)child);
             } else {
                 OverScrollDecoratorHelper.setUpStaticOverScroll(child, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
             }
