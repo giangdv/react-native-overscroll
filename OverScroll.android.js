@@ -1,13 +1,23 @@
-'use strict';
-
-import React, { Component, PropTypes } from 'react';
-import { requireNativeComponent} from 'react-native';
+import React, { Component } from 'react';
+import { DeviceEventEmitter, requireNativeComponent } from 'react-native';
 
 var OverScrollNative = requireNativeComponent('OverScroll', OverScroll);
 
 export default class OverScroll extends Component {
-  static propTypes = {
-    bounce: PropTypes.bool
+  static defaultProps = {
+    onScroll: ()=> {}
+  }
+
+  onScroll = (event)=> {
+    this.props.onScroll(event);
+  }
+
+  componentDidMount(){
+    DeviceEventEmitter.addListener('onScroll', this.onScroll);
+  }
+  
+  componentWillUnmount(){
+    DeviceEventEmitter.removeListener('onScroll', this.onScroll)
   }
 
   render () {

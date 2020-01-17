@@ -19,11 +19,4 @@ public class ReactOverScrollManager extends ViewGroupManager<ReactOverScroll> {
     protected ReactOverScroll createViewInstance(ThemedReactContext reactContext) {
         return new ReactOverScroll(reactContext);
     }
-
-    @ReactProp(name="bounce")
-    public void setBounce (ReactOverScroll overScroll, boolean bounce) {
-        if (overScroll != null) {
-            overScroll.setBounce(bounce);
-        }
-    }
 }
