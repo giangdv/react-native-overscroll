@@ -72,7 +72,16 @@ public class ReactOverScroll extends SizeMonitoringFrameLayout {
         });
     }
 
-    void onScrollEvent(int x, int y,int  width, int height){
+    int pxToDp(int px){
+        float density = context.getResources().getDisplayMetrics().density;
+        return  (int)(px / density);
+    }
+
+    void onScrollEvent(int x, int y, int width, int height){
+        x = pxToDp(x);
+        y = pxToDp(y);
+        width = pxToDp(width);
+        height = pxToDp(height);
         WritableMap nativeEvent = Arguments.createMap();
         WritableMap contentOffset = Arguments.createMap();
         contentOffset.putInt("x", x);

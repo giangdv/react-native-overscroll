@@ -13,11 +13,12 @@ export default class OverScroll extends Component {
   }
 
   componentDidMount(){
+    DeviceEventEmitter.removeAllListeners();
     DeviceEventEmitter.addListener('onScroll', this.onScroll);
   }
   
   componentWillUnmount(){
-    DeviceEventEmitter.removeListener('onScroll', this.onScroll)
+    DeviceEventEmitter.removeAllListeners();
   }
 
   render () {
