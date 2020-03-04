@@ -21,7 +21,19 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
  * Edit by kaseru
  */
 public class ReactOverScroll extends SizeMonitoringFrameLayout {
+    int currentScrollY;
     ReactContext context;
+    View child;
+    ViewTreeObserver.OnScrollChangedListener scrollEvent = new ViewTreeObserver.OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+            int scrollY = child.getScrollY();
+            int scrollX = child.getScrollX();
+            if (child == null || currentScrollY == scrollY) return;
+            currentScrollY = scrollY;
+            ReactOverScroll.this.onScrollEvent(scrollX, scrollY, child.getWidth(), child.getHeight());
+        }
+    };
 
     public ReactOverScroll(ReactContext context) {
         super(context);
@@ -34,6 +46,7 @@ public class ReactOverScroll extends SizeMonitoringFrameLayout {
             throw new IllegalStateException("ReactOverScroll can host only one direct child");
         }
         super.addView(child, index);
+        this.child = child;
         IOverScrollDecor decor = null;
         if (child != null) {
             if (child instanceof ScrollView) {
@@ -60,16 +73,15 @@ public class ReactOverScroll extends SizeMonitoringFrameLayout {
                     if (scrollY != 0) ReactOverScroll.this.onScrollEvent(0, scrollY, view.getWidth(), view.getHeight());
                 }
             });
+            child.getViewTreeObserver().addOnScrollChangedListener(this.scrollEvent);
         }
+    }
 
-        child.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                int scrollY = child.getScrollY();
-                int scrollX = child.getScrollX();
-                ReactOverScroll.this.onScrollEvent(scrollX, scrollY, child.getWidth(), child.getHeight());
-            }
-        });
+    @Override
+    public void onViewRemoved(View child) {
+        super.onViewRemoved(child);
+        child.getViewTreeObserver().removeOnScrollChangedListener(this.scrollEvent);
+        this.child = null;
     }
 
     int pxToDp(int px){
