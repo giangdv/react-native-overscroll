@@ -27,9 +27,10 @@ public class ReactOverScroll extends SizeMonitoringFrameLayout {
     ViewTreeObserver.OnScrollChangedListener scrollEvent = new ViewTreeObserver.OnScrollChangedListener() {
         @Override
         public void onScrollChanged() {
+            if (child == null) return;
             int scrollY = child.getScrollY();
             int scrollX = child.getScrollX();
-            if (child == null || currentScrollY == scrollY) return;
+            if (currentScrollY == scrollY) return;
             currentScrollY = scrollY;
             ReactOverScroll.this.onScrollEvent(scrollX, scrollY, child.getWidth(), child.getHeight());
         }
